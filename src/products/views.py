@@ -2,8 +2,9 @@ from rest_framework.viewsets import ModelViewSet
 
 from products.serializers import ProductSerializer, ProductGroupSerializer, ProductPropertySerializer
 from products.models import Product, ProductGroup, ProductProperty
+from products.mixins import ETAGMixin
 
-class ProductGroupViewSet(ModelViewSet):
+class ProductGroupViewSet(ETAGMixin, ModelViewSet):
 	"""
 	This endpoint presents **products groups**.
 
@@ -14,7 +15,8 @@ class ProductGroupViewSet(ModelViewSet):
 	queryset = ProductGroup.objects.all()
 	serializer_class = ProductGroupSerializer
 
-class ProductViewSet(ModelViewSet):
+
+class ProductViewSet(ETAGMixin, ModelViewSet):
 	"""
 	This endpoint presents **products**.
 
@@ -28,7 +30,7 @@ class ProductViewSet(ModelViewSet):
 	queryset = Product.objects.all()
 	serializer_class = ProductSerializer
 
-class ProductPropertyViewSet(ModelViewSet):
+class ProductPropertyViewSet(ETAGMixin, ModelViewSet):
 	"""
 	This endpoint presents **products properties**.
 
