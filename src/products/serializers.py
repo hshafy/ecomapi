@@ -5,10 +5,34 @@ from rest_framework.serializers import HyperlinkedModelSerializer, HyperlinkedRe
 from products.models import Product, ProductGroup, ProductProperty
 
 
+class RelatedProductPropertySerializer(HyperlinkedModelSerializer):
+	"""
+	Product Property Serializer to be included in the Product Represetation
+	"""
+	class Meta:
+		model = ProductProperty
+		fields = ['url', 'key', 'value']
+
 class ProductPropertySerializer(HyperlinkedModelSerializer):
-    class Meta:
-        model = ProductProperty
-        #fields = ('url', 'key', 'value')
+	"""
+	Product Property Serializer
+	"""    
+	class Meta:
+		model = ProductProperty
+
+class RelatedProductSerializer(HyperlinkedModelSerializer):
+	"""
+	Product Serializer with nested properties to be included in the Product Group Represetation
+
+	Product can be created without properites, then properties can be assigned later.
+	"""
+	properties = RelatedProductPropertySerializer(
+		many=True,
+		read_only=True,
+	  	)
+	class Meta:
+		model = Product
+		fields = ["url", "product_variation", "goss_price", "tax", "stock", "properties"]
 
 class ProductSerializer(HyperlinkedModelSerializer):
 	"""
@@ -16,13 +40,13 @@ class ProductSerializer(HyperlinkedModelSerializer):
 
 	Product can be created without properites, then properties can be assigned later.
 	"""
-	properties = ProductPropertySerializer(
+	product_group_name = serializers.StringRelatedField(source = "product_group", read_only=True)
+	properties = RelatedProductPropertySerializer(
 		many=True,
 		read_only=True,
 	  	)
 	class Meta:
 		model = Product
-		#fields = ('url', 'product_variation', 'goss_price', 'tax', 'stock', 'properties')
 
 class ProductGroupSerializer(HyperlinkedModelSerializer):
 	"""
@@ -30,7 +54,7 @@ class ProductGroupSerializer(HyperlinkedModelSerializer):
 
 	ProductGroup can't be created without the nested products.
 	"""
-	products = ProductSerializer(
+	products = RelatedProductSerializer(
 		many=True,
       	)
 	class Meta:
@@ -44,3 +68,4 @@ class ProductGroupSerializer(HyperlinkedModelSerializer):
 		for product_data in products_data:
 			Product.objects.create(product_group=product_group, **product_data)
 		return product_group
+
