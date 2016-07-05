@@ -7,11 +7,13 @@ manage products, it only created as sample backend using Python 2.7 - Django 1.9
 
 1- Clone the repository
 
-`$ git clone https://github.com/hshafy/ecommapi.git`
+`$ git clone https://github.com/hshafy/ecomapi.git`
 
-`$ cd ecommapi`
+`$ cd ecomapi`
 
-2- Activate virtual environment
+2- Create and activate virtual environment
+
+`$ virtualenv env`
 
 `$ source env/bin/activate`
 
@@ -19,15 +21,21 @@ manage products, it only created as sample backend using Python 2.7 - Django 1.9
 
 `$ pip install -r requirements.txt`
 
+4- Create Database
+
+`cd src`
+
+`$ python manage.py migrate`
+
 4- Run local server
 
-`$ python src/manage.py runserver`
+`$ python manage.py runserver`
 
 ##Run Tests##
 
-To run test:
+`$ cd src`
 
-`$ python src/manage.py test`
+`$ python manage.py test`
 
 ##Current Version##
 
