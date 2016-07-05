@@ -5,6 +5,10 @@ from rest_framework.response import Response
 from rest_framework import status
 
 class ETAGMixin(object):
+	"""
+	ETAG Mixin adds the ETAG header to list responses which client can use to cach resources, If the client provided
+	If-None-Match header and the resource didn't change the server respond with 304 Not Modified. 
+	"""
 	def list(self, request, *args, **kwargs):
 		queryset = self.filter_queryset(self.get_queryset())
 
